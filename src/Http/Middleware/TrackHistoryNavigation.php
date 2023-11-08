@@ -2,10 +2,9 @@
 
 namespace RodrigoPedra\HistoryNavigation\Http\Middleware;
 
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use RodrigoPedra\HistoryNavigation\HistoryNavigationService;
+use Symfony\Component\HttpFoundation\Response;
 
 class TrackHistoryNavigation
 {
@@ -13,13 +12,13 @@ class TrackHistoryNavigation
         private readonly HistoryNavigationService $historyService,
     ) {}
 
-    public function handle(Request $request, \Closure $next): Response|RedirectResponse
+    public function handle(Request $request, \Closure $next): Response
     {
         if ($this->shouldIgnore($request)) {
             return $next($request);
         }
 
-        return \tap($next($request), function (Response|RedirectResponse $response) use ($request) {
+        return \tap($next($request), function (Response $response) use ($request) {
             if ($response->isSuccessful()) {
                 $this->historyService->push($request->fullUrl())->persist();
             }
