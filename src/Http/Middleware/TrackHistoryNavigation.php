@@ -19,7 +19,7 @@ class TrackHistoryNavigation
         }
 
         return \tap($next($request), function (Response $response) use ($request) {
-            if ($response->isSuccessful()) {
+            if ($response->isSuccessful() || $response->isEmpty()) {
                 $this->historyService->push($request->fullUrl())->persist();
             }
         });
