@@ -61,7 +61,7 @@ class HistoryNavigationServiceProvider extends ServiceProvider
             $this->app->make(HistoryNavigationService::class)->clear()->persist();
         });
 
-        $events->listen(Logout::class, static function () {
+        $events->listen(Logout::class, function () {
             $this->app->make(HistoryNavigationService::class)->clear()->persist();
         });
     }
